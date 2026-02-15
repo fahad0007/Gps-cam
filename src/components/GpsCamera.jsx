@@ -184,7 +184,9 @@ const capture = () => {
         <button
           onClick={capture}
           style={{
-           
+           display:"flex",
+           justifyContent:"center",
+           alignItems:"center",
             width: "85px",
             height: "85px",
             borderRadius: "50%",
@@ -192,7 +194,7 @@ const capture = () => {
             background: "#1e88e5",
             color: "white",
             fontWeight: "bold",
-            marginBottom:"20px"
+            marginBottom:"50px"
           }}
         >
           CAPTURE
