@@ -100,15 +100,15 @@ const capture = () => {
   let lines = [];
 
   const now = new Date();
-  const isoTime = now.toISOString();
-  const epoch = now.getTime();
+  const isoTime = now.toLocaleTimeString();
+  const epoch = now;
 
   lines.push(address?.split(",")[0] || "Location");
   lines.push(address);
   lines.push(`Lat: ${coords?.lat?.toFixed(6)}  |  Lng: ${coords?.lng?.toFixed(6)}`);
   lines.push(`GPS Accuracy: ±${accuracy?.toFixed(2)} meters`);
   lines.push(`SECURE-TIME: ${isoTime}`);
-  lines.push(`EPOCH: ${epoch}`);
+  lines.push(`Date: ${epoch}`);
 
   // CALCULATE OVERLAY HEIGHT DYNAMICALLY
   const lineSpacing = textSize + 12;
@@ -144,7 +144,7 @@ const capture = () => {
 
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "90vh" }}>
+    <div style={{ position: "fixed", width: "100%", height:"100vh" ,display:"flex", justifyContent:"center" }}>
       <Webcam
         ref={webcamRef}
         screenshotFormat="image/jpeg"
@@ -153,12 +153,13 @@ const capture = () => {
           facingMode: { ideal: "environment" },
           aspectRatio: 4 / 3,
         }}
-        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        style={{ position:"absolute",left:"-10px",width: "100%", height: "90%", objectFit: "cover" }}
       />
 
       <div style={{
         position: "absolute",
         top: 0,
+
         width: "100%",
         background: "rgba(0,0,0,0.6)",
         color: "white",
@@ -175,13 +176,14 @@ const capture = () => {
         bottom: 0,
         width: "100%",
         padding: "20px",
-        background: "rgba(0,0,0,0.85)",
+        // background: "rgba(0,0,0,0.85)",
         display: "flex",
         justifyContent: "center"
       }}>
         <button
           onClick={capture}
           style={{
+            marginBottom:"15px",
             width: "85px",
             height: "85px",
             borderRadius: "50%",
@@ -194,7 +196,7 @@ const capture = () => {
           CAPTURE
         </button>
       </div>
-     
+
     </div>
   );
 };
