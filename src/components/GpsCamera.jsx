@@ -153,7 +153,7 @@ const capture = () => {
           facingMode: { ideal: "environment" },
           aspectRatio: 4 / 3,
         }}
-        style={{ position:"absolute",left:"-10px",width: "100%", height: "90%", objectFit: "cover" }}
+        style={{ position:"absolute",left:"-10px",width: "100%", height: "100%", objectFit: "cover" }}
       />
 
       <div style={{
