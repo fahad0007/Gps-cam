@@ -153,13 +153,12 @@ const capture = () => {
           facingMode: { ideal: "environment" },
           aspectRatio: 4 / 3,
         }}
-        style={{ position:"absolute",left:"-10px",width: "100%", height: "100%", objectFit: "cover" }}
+        style={{ position:"absolute",left:"-8px",width: "100%", height: "100%", objectFit: "cover" }}
       />
 
       <div style={{
         position: "absolute",
         top: 0,
-
         width: "100%",
         background: "rgba(0,0,0,0.6)",
         color: "white",
@@ -178,7 +177,8 @@ const capture = () => {
         padding: "20px",
         // background: "rgba(0,0,0,0.85)",
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
+        alignContent:"center"
       }}>
         <button
           onClick={capture}
