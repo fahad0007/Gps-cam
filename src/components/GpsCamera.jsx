@@ -248,8 +248,6 @@ return (
         alignItems: "flex-end",
         paddingBottom: "35px",
       }}
-
-      
     >
       <div
         onClick={capture}
