@@ -209,7 +209,7 @@ return (
     </div>
 
     {/* GPS INFO CENTER BADGE */}
-    {!loading && !error && coords && (
+    {/* {!loading && !error && coords && (
       <div
         style={{
           position: "absolute",
@@ -231,7 +231,7 @@ return (
         </div>
         <div>Accuracy: ±{accuracy?.toFixed(1)}m</div>
       </div>
-    )}
+    )} */}
 
     {/* BOTTOM GRADIENT + BUTTON */}
     <div
@@ -261,6 +261,7 @@ return (
           alignItems: "center",
           cursor: "pointer",
           boxShadow: "0 0 25px rgba(0,0,0,0.6)",
+          marginBottom:"60px"
         }}
       >
         <div
