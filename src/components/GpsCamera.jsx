@@ -15,30 +15,33 @@ const GpsCamera = () => {
   // GET LOCATION
   // ============================
   useEffect(() => {
-    function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                const lat = position.coords.latitude.toFixed(6);
-                const lng = position.coords.longitude.toFixed(6);
-                const acc = position.coords.accuracy.toFixed(1);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const acc = position.coords.accuracy;
 
-                document.getElementById("locationBox").innerHTML =
-                    `Lat: ${lat} | Lng: ${lng}<br>Accuracy: ±${acc}m`;
-            },
-            error => {
-                document.getElementById("locationBox").innerHTML =
-                    "Fetching GPS...";
-            },
-            {
-                enableHighAccuracy: false,  // 🔥 IMPORTANT CHANGE
-                timeout: 5000,
-                maximumAge: 0
-            }
-        );
-    }
-}
+        setCoords({ lat, lng });
+        setAccuracy(acc);
 
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+          );
+          const data = await res.json();
+          setAddress(data.display_name || "Unknown location");
+        } catch {
+          setAddress("Address unavailable");
+        }
+
+        setLoading(false);
+      },
+      () => {
+        setError("Location permission denied");
+        setLoading(false);
+      },
+      { enableHighAccuracy: true }
+    );
   }, []);
 
   // ============================
@@ -140,16 +143,14 @@ const capture = () => {
 };
 
 
-return (
+ return (
   <div
     style={{
       position: "fixed",
-      inset: 0,
-      width: "100vw",
+      width: "100%",
       height: "100vh",
       overflow: "hidden",
-      backgroundColor: "black",
-      fontFamily: "system-ui, sans-serif",
+      fontFamily: "system-ui, sans-serif"
     }}
   >
     {/* CAMERA */}
@@ -159,53 +160,50 @@ return (
       screenshotQuality={1}
       videoConstraints={{
         facingMode: { ideal: "environment" },
+        aspectRatio: 4 / 3,
       }}
       style={{
         position: "absolute",
-        inset: 0,
         width: "100%",
         height: "100%",
         objectFit: "cover",
       }}
     />
 
-    {/* TOP HEADER */}
+    {/* TOP GLASS HEADER */}
     <div
       style={{
         position: "absolute",
         top: 0,
-        left: 0,
-        right: 0,
-        padding: "14px 16px",
-        background: "rgba(0,0,0,0.55)",
-        backdropFilter: "blur(8px)",
+        width: "100%",
+        padding: "14px 20px",
+        backdropFilter: "blur(10px)",
+        background: "rgba(0,0,0,0.45)",
+        color: "#fff",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        color: "white",
         fontWeight: "600",
-        fontSize: "14px",
-        boxSizing: "border-box",
+        letterSpacing: "1px",
       }}
     >
-      <span>Pro F-GPS CAMERA</span>
+      <div>Pro F-GPS CAMERA</div>
 
-      <span
+      <div
         style={{
-          padding: "5px 10px",
+          padding: "6px 12px",
           borderRadius: "20px",
-          fontSize: "11px",
+          fontSize: "12px",
           background: error
             ? "rgba(255,0,0,0.7)"
-            : "rgba(0,180,0,0.8)",
-          whiteSpace: "nowrap",
+            : "rgba(0,200,0,0.7)",
         }}
       >
         {error ? "GPS ERROR" : "GPS LIVE"}
-      </span>
+      </div>
     </div>
 
-    {/* GPS INFO CENTER BADGE */}
+    {/* GPS INFO BADGE */}
     {!loading && !error && coords && (
       <div
         style={{
@@ -213,58 +211,56 @@ return (
           top: "70px",
           left: "50%",
           transform: "translateX(-50%)",
-          background: "rgba(0,0,0,0.65)",
+          background: "rgba(0,0,0,0.6)",
           color: "#fff",
-          padding: "10px 16px",
+          padding: "10px 18px",
           borderRadius: "12px",
-          fontSize: "12px",
+          fontSize: "13px",
           textAlign: "center",
           backdropFilter: "blur(6px)",
-          maxWidth: "90%",
         }}
       >
-        <div>
-          Lat: {coords.lat.toFixed(6)} | Lng: {coords.lng.toFixed(6)}
-        </div>
-        <div>Accuracy: ±{accuracy?.toFixed(1)}m</div>
+        Lat: {coords.lat.toFixed(6)} | Lng: {coords.lng.toFixed(6)}
+        <br />
+        Accuracy: ±{accuracy?.toFixed(1)}m
       </div>
     )}
 
-    {/* BOTTOM GRADIENT + BUTTON */}
+    {/* BOTTOM GRADIENT */}
     <div
       style={{
         position: "absolute",
         bottom: 0,
-        left: 0,
-        right: 0,
+        width: "100%",
         height: "160px",
         background:
-          "linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0))",
+          "linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0))",
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-end",
         paddingBottom: "35px",
       }}
     >
+      {/* CAPTURE BUTTON */}
       <div
         onClick={capture}
         style={{
-          width: "90px",
-          height: "90px",
+          width: "95px",
+          height: "95px",
           borderRadius: "50%",
-          border: "4px solid white",
+          border: "5px solid white",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           cursor: "pointer",
-          boxShadow: "0 0 25px rgba(0,0,0,0.6)",
-          marginBottom:"60px"
+          boxShadow: "0 0 20px rgba(0,0,0,0.5)",
+          transition: "0.2s",
         }}
       >
         <div
           style={{
-            width: "60px",
-            height: "60px",
+            width: "65px",
+            height: "65px",
             borderRadius: "50%",
             background: "#1e88e5",
           }}
@@ -273,7 +269,6 @@ return (
     </div>
   </div>
 );
-
 
 };
 
