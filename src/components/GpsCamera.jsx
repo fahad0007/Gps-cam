@@ -14,7 +14,8 @@ const GpsCamera = () => {
   // ============================
   // GET LOCATION
   // ============================
-  function getLocation() {
+  useEffect(() => {
+    function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             position => {
@@ -38,6 +39,7 @@ const GpsCamera = () => {
     }
 }
 
+  }, []);
 
   // ============================
   // TEXT WRAP
