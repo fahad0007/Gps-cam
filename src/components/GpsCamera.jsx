@@ -261,6 +261,7 @@ return (
           alignItems: "center",
           cursor: "pointer",
           boxShadow: "0 0 25px rgba(0,0,0,0.6)",
+          marginBottom:"60px"
         }}
       >
         <div
