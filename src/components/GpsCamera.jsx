@@ -143,66 +143,140 @@ const capture = () => {
 };
 
 
-  return (
-    <div style={{ position: "fixed", width: "100%", height:"100vh" ,display:"flex", justifyContent:"center" }}>
-      <Webcam
-        ref={webcamRef}
-        screenshotFormat="image/jpeg"
-        screenshotQuality={1}
-        videoConstraints={{
-          facingMode: { ideal: "environment" },
-          aspectRatio: 4 / 3,
-        }}
-        style={{ position:"absolute",left:"-8px",width: "100%", height: "100%", objectFit: "cover" }}
-      />
+return (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      width: "100vw",
+      height: "100vh",
+      overflow: "hidden",
+      backgroundColor: "black",
+      fontFamily: "system-ui, sans-serif",
+    }}
+  >
+    {/* CAMERA */}
+    <Webcam
+      ref={webcamRef}
+      screenshotFormat="image/jpeg"
+      screenshotQuality={1}
+      videoConstraints={{
+        facingMode: { ideal: "environment" },
+      }}
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+      }}
+    />
 
-      <div style={{
+    {/* TOP HEADER */}
+    <div
+      style={{
         position: "absolute",
         top: 0,
-        width: "100%",
-        background: "rgba(0,0,0,0.6)",
+        left: 0,
+        right: 0,
+        padding: "14px 16px",
+        background: "rgba(0,0,0,0.55)",
+        backdropFilter: "blur(8px)",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
         color: "white",
-        textAlign: "center",
-        padding: "12px",
-        fontWeight: "bold",
-        letterSpacing: "1px"
-      }}>
-        Pro F-GPS CAMERA
-      </div>
+        fontWeight: "600",
+        fontSize: "14px",
+        boxSizing: "border-box",
+      }}
+    >
+      <span>Pro F-GPS CAMERA</span>
 
-      <div style={{
+      <span
+        style={{
+          padding: "5px 10px",
+          borderRadius: "20px",
+          fontSize: "11px",
+          background: error
+            ? "rgba(255,0,0,0.7)"
+            : "rgba(0,180,0,0.8)",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {error ? "GPS ERROR" : "GPS LIVE"}
+      </span>
+    </div>
+
+    {/* GPS INFO CENTER BADGE */}
+    {!loading && !error && coords && (
+      <div
+        style={{
+          position: "absolute",
+          top: "70px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: "rgba(0,0,0,0.65)",
+          color: "#fff",
+          padding: "10px 16px",
+          borderRadius: "12px",
+          fontSize: "12px",
+          textAlign: "center",
+          backdropFilter: "blur(6px)",
+          maxWidth: "90%",
+        }}
+      >
+        <div>
+          Lat: {coords.lat.toFixed(6)} | Lng: {coords.lng.toFixed(6)}
+        </div>
+        <div>Accuracy: ±{accuracy?.toFixed(1)}m</div>
+      </div>
+    )}
+
+    {/* BOTTOM GRADIENT + BUTTON */}
+    <div
+      style={{
         position: "absolute",
         bottom: 0,
-        width: "100%",
-        padding: "20px",
-        // background: "rgba(0,0,0,0.85)",
+        left: 0,
+        right: 0,
+        height: "160px",
+        background:
+          "linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0))",
         display: "flex",
         justifyContent: "center",
-        alignContent:"center",
-        marginBottom:"30px"
-      }}>
-        <button
-          onClick={capture}
+        alignItems: "flex-end",
+        paddingBottom: "35px",
+      }}
+    >
+      <div
+        onClick={capture}
+        style={{
+          width: "90px",
+          height: "90px",
+          borderRadius: "50%",
+          border: "4px solid white",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          cursor: "pointer",
+          boxShadow: "0 0 25px rgba(0,0,0,0.6)",
+        }}
+      >
+        <div
           style={{
-           display:"flex",
-           justifyContent:"center",
-           alignItems:"center",
-            width: "85px",
-            height: "85px",
+            width: "60px",
+            height: "60px",
             borderRadius: "50%",
-            border: "6px solid white",
             background: "#1e88e5",
-            color: "white",
-            fontWeight: "bold",
-            marginBottom:"50px"
           }}
-        >
-          CAPTURE
-        </button>
+        />
       </div>
-
     </div>
-  );
+  </div>
+);
+
+
 };
 
 export default GpsCamera;
