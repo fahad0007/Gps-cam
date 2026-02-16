@@ -14,35 +14,30 @@ const GpsCamera = () => {
   // ============================
   // GET LOCATION
   // ============================
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const acc = position.coords.accuracy;
+  function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                const lat = position.coords.latitude.toFixed(6);
+                const lng = position.coords.longitude.toFixed(6);
+                const acc = position.coords.accuracy.toFixed(1);
 
-        setCoords({ lat, lng });
-        setAccuracy(acc);
+                document.getElementById("locationBox").innerHTML =
+                    `Lat: ${lat} | Lng: ${lng}<br>Accuracy: ±${acc}m`;
+            },
+            error => {
+                document.getElementById("locationBox").innerHTML =
+                    "Fetching GPS...";
+            },
+            {
+                enableHighAccuracy: false,  // 🔥 IMPORTANT CHANGE
+                timeout: 5000,
+                maximumAge: 0
+            }
+        );
+    }
+}
 
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-          );
-          const data = await res.json();
-          setAddress(data.display_name || "Unknown location");
-        } catch {
-          setAddress("Address unavailable");
-        }
-
-        setLoading(false);
-      },
-      () => {
-        setError("Location permission denied");
-        setLoading(false);
-      },
-      { enableHighAccuracy: true }
-    );
-  }, []);
 
   // ============================
   // TEXT WRAP
