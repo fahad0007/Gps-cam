@@ -277,7 +277,7 @@ return (
     <div
   style={{
     position: "absolute",
-    bottom: "60px",
+    bottom: "70px",
     right: "15px",
     color: "rgba(255,255,255,0.7)",
     fontSize: "11px",
