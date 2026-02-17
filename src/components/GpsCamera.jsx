@@ -277,7 +277,7 @@ return (
     <div
   style={{
     position: "absolute",
-    bottom: "10px",
+    bottom: "60px",
     right: "15px",
     color: "rgba(255,255,255,0.7)",
     fontSize: "11px",
@@ -287,7 +287,7 @@ return (
     fontSize: "10px",
 textTransform: "uppercase",
 letterSpacing: "1px",
-marginBottom:"40px"
+
 
   }}
 >
