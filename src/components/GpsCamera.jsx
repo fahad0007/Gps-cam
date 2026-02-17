@@ -287,7 +287,7 @@ return (
     fontSize: "10px",
 textTransform: "uppercase",
 letterSpacing: "1px",
-marginBottom:"20px"
+marginBottom:"40px"
 
   }}
 >
