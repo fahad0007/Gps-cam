@@ -8,9 +8,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: "My React App",
-        short_name: "MyApp",
-        description: "My downloadable React App",
+        name: "Pro F-Gps Cam",
+        short_name: "F-Gps",
+        description: "Pro F=Gps Cam For Gps Location",
         theme_color: "#000000",
         background_color: "#ffffff",
         display: "standalone",
