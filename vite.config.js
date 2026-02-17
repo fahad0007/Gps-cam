@@ -17,7 +17,7 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
-            src: "/pwa-192x192.png",
+            src: "/vite2.png",
             sizes: "192x192",
             type: "image/png"
           },
