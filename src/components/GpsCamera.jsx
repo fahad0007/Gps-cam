@@ -324,25 +324,7 @@ return (
         />
       </div>
     </div>
-    <div
-  style={{
-    position: "absolute",
-    bottom: "50px",
-    right: "15px",
-    color: "rgba(255,255,255,0.7)",
-    fontSize: "11px",
-    fontWeight: "500",
-    letterSpacing: "0.5px",
-    textShadow: "0 0 5px rgba(0,0,0,0.6)",
-    fontSize: "10px",
-textTransform: "uppercase",
-letterSpacing: "1px",
-
-
-  }}
->
-  Designed & Developed by Fahad
-</div>
+ 
 
   </div>
 );
