@@ -17,12 +17,12 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
-            src: "/vite2.png",
+            src: "/camera.png",
             sizes: "192x192",
             type: "image/png"
           },
           {
-            src: "/vite2.png",
+            src: "/camera.png",
             sizes: "512x512",
             type: "image/png"
           }

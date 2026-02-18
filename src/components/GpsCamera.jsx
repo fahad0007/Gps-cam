@@ -191,6 +191,54 @@ return (
         boxSizing: "border-box",
       }}
     >
+
+      {/* TOP HEADER */}
+<div
+  style={{
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: "14px 16px",
+    background: "rgba(0,0,0,0.55)",
+    backdropFilter: "blur(8px)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    color: "white",
+    fontWeight: "600",
+    fontSize: "14px",
+    boxSizing: "border-box",
+  }}
+>
+  <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+    <span>Pro F-GPS CAMERA</span>
+    <span
+      style={{
+        padding: "5px 10px",
+        borderRadius: "20px",
+        fontSize: "11px",
+        background: "rgba(0,180,0,0.8)",
+        whiteSpace: "nowrap",
+      }}
+    >
+      READY
+    </span>
+  </div>
+
+  {/* Version + Credit */}
+  <div
+    style={{
+      marginTop: "4px",
+      fontSize: "11px",
+      opacity: 0.85,
+      fontWeight: "400",
+    }}
+  >
+    Version 1.0.19 • Designed & Developed by Fahad
+  </div>
+</div>
+
       <span>Pro F-GPS CAMERA</span>
 
       <span
