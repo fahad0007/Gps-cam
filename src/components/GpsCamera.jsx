@@ -173,62 +173,40 @@ return (
     />
 
     {/* TOP HEADER */}
-   <div
-  style={{
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    padding: "14px 16px",
-    background: "rgba(0,0,0,0.55)",
-    backdropFilter: "blur(8px)",
-    display: "flex",
-    flexDirection: "column",
-    color: "white",
-    fontWeight: "600",
-    fontSize: "14px",
-    boxSizing: "border-box",
-  }}
->
-  {/* Top Row */}
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      width: "100%",
-    }}
-  >
-    <span>Pro F-GPS CAMERA</span>
-
-    <span
+    <div
       style={{
-        padding: "5px 10px",
-        borderRadius: "20px",
-        fontSize: "11px",
-        background: error
-          ? "rgba(255,0,0,0.7)"
-          : "rgba(0,180,0,0.8)",
-        whiteSpace: "nowrap",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        padding: "14px 16px",
+        background: "rgba(0,0,0,0.55)",
+        backdropFilter: "blur(8px)",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        color: "white",
+        fontWeight: "600",
+        fontSize: "14px",
+        boxSizing: "border-box",
       }}
     >
-      {error ? "GPS ERROR" : "GPS LIVE"}
-    </span>
-  </div>
+      <span>Pro F-GPS CAMERA</span>
 
-  {/* Version + Credit Line */}
-  <div
-    style={{
-      marginTop: "4px",
-      fontSize: "11px",
-      fontWeight: "400",
-      opacity: 0.85,
-    }}
-  >
-    Version 1.0.19 • Designed & Developed by Fahad
-  </div>
-</div>
-
+      <span
+        style={{
+          padding: "5px 10px",
+          borderRadius: "20px",
+          fontSize: "11px",
+          background: error
+            ? "rgba(255,0,0,0.7)"
+            : "rgba(0,180,0,0.8)",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {error ? "GPS ERROR" : "GPS LIVE"}
+      </span>
+    </div>
 
     {/* GPS INFO CENTER BADGE */}
     {/* {!loading && !error && coords && (
@@ -296,7 +274,25 @@ return (
         />
       </div>
     </div>
- 
+    <div
+  style={{
+    position: "absolute",
+    bottom: "50px",
+    right: "15px",
+    color: "rgba(255,255,255,0.7)",
+    fontSize: "11px",
+    fontWeight: "500",
+    letterSpacing: "0.5px",
+    textShadow: "0 0 5px rgba(0,0,0,0.6)",
+    fontSize: "10px",
+textTransform: "uppercase",
+letterSpacing: "1px",
+
+
+  }}
+>
+  Designed & Developed by Fahad
+</div>
 
   </div>
 );
