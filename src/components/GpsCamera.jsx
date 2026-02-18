@@ -173,9 +173,7 @@ return (
     />
 
     {/* TOP HEADER */}
-
-    {/* TOP HEADER */}
-<div
+   <div
   style={{
     position: "absolute",
     top: 0,
@@ -186,77 +184,51 @@ return (
     backdropFilter: "blur(8px)",
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-start",
     color: "white",
     fontWeight: "600",
     fontSize: "14px",
     boxSizing: "border-box",
   }}
 >
-  <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+  {/* Top Row */}
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      width: "100%",
+    }}
+  >
     <span>Pro F-GPS CAMERA</span>
-  <span
-        style={{
-          padding: "5px 10px",
-          borderRadius: "20px",
-          fontSize: "11px",
-          background: error
-            ? "rgba(255,0,0,0.7)"
-            : "rgba(0,180,0,0.8)",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {error ? "GPS ERROR" : "GPS LIVE"}
-      </span>
+
+    <span
+      style={{
+        padding: "5px 10px",
+        borderRadius: "20px",
+        fontSize: "11px",
+        background: error
+          ? "rgba(255,0,0,0.7)"
+          : "rgba(0,180,0,0.8)",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {error ? "GPS ERROR" : "GPS LIVE"}
+    </span>
   </div>
 
-  {/* Version + Credit */}
+  {/* Version + Credit Line */}
   <div
     style={{
       marginTop: "4px",
       fontSize: "11px",
-      opacity: 0.85,
       fontWeight: "400",
+      opacity: 0.85,
     }}
   >
     Version 1.0.19 • Designed & Developed by Fahad
   </div>
 </div>
-{/* 
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        padding: "14px 16px",
-        background: "rgba(0,0,0,0.55)",
-        backdropFilter: "blur(8px)",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        color: "white",
-        fontWeight: "600",
-        fontSize: "14px",
-        boxSizing: "border-box",
-      }}
-    >
-      <span>Pro F-GPS CAMERA</span>
 
-      <span
-        style={{
-          padding: "5px 10px",
-          borderRadius: "20px",
-          fontSize: "11px",
-          background: error
-            ? "rgba(255,0,0,0.7)"
-            : "rgba(0,180,0,0.8)",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {error ? "GPS ERROR" : "GPS LIVE"}
-      </span>
-    </div> */}
 
     {/* GPS INFO CENTER BADGE */}
     {/* {!loading && !error && coords && (
