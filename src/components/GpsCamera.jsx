@@ -322,7 +322,7 @@ return (
         />
       </div>
     </div>
-    <div
+    {/* <div
   style={{
     position: "absolute",
     bottom: "50px",
@@ -340,7 +340,7 @@ letterSpacing: "1px",
   }}
 >
   Designed & Developed by Fahad
-</div>
+</div> */}
 
   </div>
 );
