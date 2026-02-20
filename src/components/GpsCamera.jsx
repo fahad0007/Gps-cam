@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-import Footer from "./Footer";
+
 
 const GpsCamera = () => {
   const webcamRef = useRef(null);
