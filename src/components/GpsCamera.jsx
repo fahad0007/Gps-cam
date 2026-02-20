@@ -189,10 +189,11 @@ const GpsCamera = () => {
           fontWeight: "600",
           fontSize: "14px",
           boxSizing: "border-box",
+          
         }}
       >
         <div>
-          <span>Pro F-GPS CAMERA</span>
+          <span style={{fontVariant:"small-caps"}}> Pro F-Gps Camera</span>
           <div
             style={{
               marginTop: "4px",
