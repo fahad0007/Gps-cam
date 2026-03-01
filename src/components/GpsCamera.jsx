@@ -107,7 +107,7 @@ const GpsCamera = () => {
       `Lat: ${coords?.lat?.toFixed(6)} | Lng: ${coords?.lng?.toFixed(6)}`,
       `Accuracy: ±${accuracy?.toFixed(2)} meters`,
       `Secure Time: ${now.toLocaleString()}`,
-      `Version 1.0.19`,
+      `Version 2.1.01`,
       `Designed & Developed by Fahad`,
     ];
 
