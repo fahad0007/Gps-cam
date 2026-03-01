@@ -1,19 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 
-
 const GpsCamera = () => {
   const webcamRef = useRef(null);
 
   const [coords, setCoords] = useState(null);
   const [accuracy, setAccuracy] = useState(null);
   const [address, setAddress] = useState("");
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // ============================
+  const [gallery, setGallery] = useState([]);
+  const [showGallery, setShowGallery] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  // =============================
+  // LOAD & SAVE GALLERY
+  // =============================
+  useEffect(() => {
+    const saved = localStorage.getItem("fahad-gps-gallery");
+    if (saved) setGallery(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("fahad-gps-gallery", JSON.stringify(gallery));
+  }, [gallery]);
+
+  // =============================
   // GET LOCATION
-  // ============================
+  // =============================
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -33,46 +47,40 @@ const GpsCamera = () => {
         } catch {
           setAddress("Address unavailable");
         }
-
-        setLoading(false);
       },
       () => {
         setError("Location permission denied");
-        setLoading(false);
       },
       { enableHighAccuracy: true }
     );
   }, []);
 
-  // ============================
-  // TEXT WRAP
-  // ============================
-  const wrapText = (ctx, text, x, y, maxWidth, lineHeight) => {
-    if (!text) return y;
+  // =============================
+  // SHARE FUNCTION
+  // =============================
+  const shareImage = async (image) => {
+    try {
+      if (navigator.share) {
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const file = new File([blob], "F-GPS.jpg", { type: "image/jpeg" });
 
-    const words = text.split(" ");
-    let line = "";
-
-    for (let n = 0; n < words.length; n++) {
-      const testLine = line + words[n] + " ";
-      const metrics = ctx.measureText(testLine);
-
-      if (metrics.width > maxWidth && n > 0) {
-        ctx.fillText(line, x, y);
-        line = words[n] + " ";
-        y += lineHeight;
+        await navigator.share({
+          files: [file],
+          title: "F-GPS Camera Image",
+          text: "Captured using Pro F-GPS Camera v1.0.19",
+        });
       } else {
-        line = testLine;
+        alert("Sharing not supported on this device");
       }
+    } catch (err) {
+      console.log("Share failed:", err);
     }
-
-    ctx.fillText(line, x, y);
-    return y + lineHeight;
   };
 
-  // ============================
-  // CAPTURE
-  // ============================
+  // =============================
+  // CAPTURE IMAGE
+  // =============================
   const capture = () => {
     if (!webcamRef.current) return;
 
@@ -89,69 +97,58 @@ const GpsCamera = () => {
     ctx.drawImage(video, 0, 0, width, height);
 
     const padding = width * 0.04;
-
-    // SAFE font sizes (capped)
-    const titleSize = Math.min(width * 0.04, 70);
     const textSize = Math.min(width * 0.028, 45);
-    const smallSize = Math.min(width * 0.025, 38);
-
-    ctx.fillStyle = "#ffffff";
-
-    let lines = [];
+    const lineSpacing = textSize + 12;
 
     const now = new Date();
-    const isoTime = now.toLocaleTimeString();
-    const epoch = now;
 
-    lines.push(address?.split(",")[0] || "Location");
-    lines.push(address);
-    lines.push(`Lat: ${coords?.lat?.toFixed(6)}  |  Lng: ${coords?.lng?.toFixed(6)}`);
-    lines.push(`GPS Accuracy: ±${accuracy?.toFixed(2)} meters`);
-    lines.push(`SECURE-TIME: ${isoTime}`);
-    lines.push(`Date: ${epoch}`);
+    const lines = [
+      address,
+      `Lat: ${coords?.lat?.toFixed(6)} | Lng: ${coords?.lng?.toFixed(6)}`,
+      `Accuracy: ±${accuracy?.toFixed(2)} meters`,
+      `Secure Time: ${now.toLocaleString()}`,
+      `Date: ${now}`
+      `Pro F-Gps by Fahad`,
+    ];
 
-    // CALCULATE OVERLAY HEIGHT DYNAMICALLY
-    const lineSpacing = textSize + 12;
     const overlayHeight = padding * 2 + lineSpacing * lines.length + 20;
 
     ctx.fillStyle = "rgba(0,0,0,0.75)";
     ctx.fillRect(0, height - overlayHeight, width, overlayHeight);
 
     ctx.fillStyle = "#ffffff";
-
-    let currentY = height - overlayHeight + padding + titleSize;
-
-    // TITLE
-    ctx.font = `bold ${titleSize}px sans-serif`;
-    ctx.fillText(lines[0], padding, currentY);
-
-    currentY += lineSpacing;
-
-    // REST OF TEXT
     ctx.font = `${textSize}px sans-serif`;
 
-    for (let i = 1; i < lines.length; i++) {
-      ctx.fillText(lines[i], padding, currentY);
-      currentY += lineSpacing;
-    }
+    let currentY = height - overlayHeight + padding + textSize;
 
-    const image = canvas.toDataURL("image/jpeg", 1);
+    lines.forEach((line) => {
+      ctx.fillText(line, padding, currentY);
+      currentY += lineSpacing;
+    });
+
+    const image = canvas.toDataURL("image/jpeg", 0.95);
+
+    setGallery((prev) => [image, ...prev]);
+
     const link = document.createElement("a");
     link.href = image;
-    link.download = `F-gps--${Date.now()}.jpg`;
+    link.download = `F-GPS-${Date.now()}.jpg`;
     link.click();
   };
 
+  const deletePhoto = (index) => {
+    const updated = [...gallery];
+    updated.splice(index, 1);
+    setGallery(updated);
+  };
 
   return (
     <div
       style={{
         position: "fixed",
         inset: 0,
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
         backgroundColor: "black",
+        overflow: "hidden",
         fontFamily: "system-ui, sans-serif",
       }}
     >
@@ -159,10 +156,7 @@ const GpsCamera = () => {
       <Webcam
         ref={webcamRef}
         screenshotFormat="image/jpeg"
-        screenshotQuality={1}
-        videoConstraints={{
-          facingMode: { ideal: "environment" },
-        }}
+        videoConstraints={{ facingMode: { ideal: "environment" } }}
         style={{
           position: "absolute",
           inset: 0,
@@ -172,7 +166,7 @@ const GpsCamera = () => {
         }}
       />
 
-      {/* TOP HEADER */}
+      {/* HEADER */}
       <div
         style={{
           position: "absolute",
@@ -184,87 +178,87 @@ const GpsCamera = () => {
           backdropFilter: "blur(8px)",
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
           color: "white",
-          fontWeight: "600",
-          fontSize: "14px",
-          boxSizing: "border-box",
-          
         }}
       >
         <div>
-          <span style={{fontVariant:"small-caps"}}> Pro F-Gps Camera</span>
-          <div
-            style={{
-              marginTop: "4px",
-              fontSize: "11px",
-              fontWeight: "400",
-              opacity: 0.85,
-            }}
-          >
+          <div style={{ fontVariant: "small-caps" }}>
+            Pro F-Gps Camera
+          </div>
+          <div style={{ fontSize: "11px", opacity: 0.8 }}>
             Version 1.0.19 • Designed & Developed by Fahad
           </div>
-
         </div>
-
 
         <span
           style={{
-            padding: "5px 10px",
+            padding: "10px 20px",
             borderRadius: "20px",
             fontSize: "11px",
             background: error
               ? "rgba(255,0,0,0.7)"
               : "rgba(0,180,0,0.8)",
-            whiteSpace: "nowrap",
           }}
         >
           {error ? "GPS ERROR" : "GPS LIVE"}
         </span>
-
       </div>
 
-      {/* GPS INFO CENTER BADGE */}
-      {/* {!loading && !error && coords && (
-      <div
-        style={{
-          position: "absolute",
-          top: "70px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          background: "rgba(0,0,0,0.65)",
-          color: "#fff",
-          padding: "10px 16px",
-          borderRadius: "12px",
-          fontSize: "12px",
-          textAlign: "center",
-          backdropFilter: "blur(6px)",
-          maxWidth: "90%",
-        }}
-      >
-        <div>
-          Lat: {coords.lat.toFixed(6)} | Lng: {coords.lng.toFixed(6)}
+      {/* ACCURACY METER */}
+      {accuracy && (
+        <div
+          style={{
+            position: "absolute",
+            top: "80px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "80%",
+            height: "8px",
+            background: "rgba(255,255,255,0.2)",
+            borderRadius: "5px",
+          }}
+        >
+          <div
+            style={{
+              width: `${Math.max(5, 100 - accuracy)}%`,
+              height: "100%",
+              background: "#00ff88",
+              borderRadius: "5px",
+            }}
+          />
         </div>
-        <div>Accuracy: ±{accuracy?.toFixed(1)}m</div>
-      </div>
-    )} */}
+      )}
 
-      {/* BOTTOM GRADIENT + BUTTON */}
+      {/* BOTTOM CONTROLS */}
       <div
         style={{
           position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: "160px",
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0))",
+          bottom: "40px",
+          left: "40%",
+          transform: "translateX(-50%)",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-end",
-          paddingBottom: "35px",
+          alignItems: "center",
+          gap: "20px",
         }}
       >
+        {/* Gallery Button */}
+        <button
+          onClick={() => setShowGallery(true)}
+          style={{
+            fontSize:"40px",
+            width: "65px",
+            height: "65px",
+            borderRadius: "12px",
+            border: "none",
+            background: "rgba(0,0,0,0.6)",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          📁
+        </button>
+
+        {/* Capture Button */}
         <div
           onClick={capture}
           style={{
@@ -276,8 +270,6 @@ const GpsCamera = () => {
             justifyContent: "center",
             alignItems: "center",
             cursor: "pointer",
-            boxShadow: "0 0 25px rgba(0,0,0,0.6)",
-            marginBottom: "60px"
           }}
         >
           <div
@@ -290,10 +282,111 @@ const GpsCamera = () => {
           />
         </div>
       </div>
+
+      {/* GALLERY SCREEN */}
+      {showGallery && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "black",
+            zIndex: 9999,
+            overflowY: "auto",
+            padding: "20px",
+          }}
+        >
+          <button
+            onClick={() => setShowGallery(false)}
+            style={{
+              position: "fixed",
+              top: "15px",
+              right: "20px",
+              background: "red",
+              color: "white",
+              border: "none",
+              padding: "8px 12px",
+            }}
+          >
+            Close
+          </button>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill,minmax(120px,1fr))",
+              gap: "10px",
+              marginTop: "60px",
+            }}
+          >
+            {gallery.map((img, index) => (
+              <div key={index}>
+                <img
+                  src={img}
+                  alt="captured"
+                  style={{ width: "100%", borderRadius: "6px" }}
+                  onClick={() => setSelectedImage(img)}
+                />
+
+                <div style={{ display: "flex", gap: "4px", marginTop: "4px" }}>
+                  <button
+                    onClick={() => shareImage(img)}
+                    style={{
+                      flex: 1,
+                      background: "#1e88e5",
+                      color: "white",
+                      border: "none",
+                      padding: "6px",
+                    }}
+                  >
+                    Share
+                  </button>
+
+                  <button
+                    onClick={() => deletePhoto(index)}
+                    style={{
+                      flex: 1,
+                      background: "darkred",
+                      color: "white",
+                      border: "none",
+                      padding: "6px",
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* FULLSCREEN VIEW */}
+      {selectedImage && (
+        <div
+          onClick={() => setSelectedImage(null)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.9)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10000,
+          }}
+        >
+          <img
+            src={selectedImage}
+            alt="full"
+            style={{
+              maxWidth: "95%",
+              maxHeight: "95%",
+              borderRadius: "10px",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
-
-
 };
 
 export default GpsCamera;
