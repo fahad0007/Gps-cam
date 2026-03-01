@@ -107,8 +107,9 @@ const GpsCamera = () => {
       `Lat: ${coords?.lat?.toFixed(6)} | Lng: ${coords?.lng?.toFixed(6)}`,
       `Accuracy: ±${accuracy?.toFixed(2)} meters`,
       `Secure Time: ${now.toLocaleString()}`,
+      `Date: ${now}`,
       `Version 2.1.01`,
-      `Designed & Developed by Fahad`,
+      `Pro F-Gps by Fahad`,
     ];
 
     const overlayHeight = padding * 2 + lineSpacing * lines.length + 20;
