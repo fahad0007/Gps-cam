@@ -186,7 +186,7 @@ const GpsCamera = () => {
             Pro F-Gps Camera
           </div>
           <div style={{ fontSize: "11px", opacity: 0.8 }}>
-            Version 1.0.19 • Designed & Developed by Fahad
+            Version 2.1.01 • Designed & Developed by Fahad
           </div>
         </div>
 
@@ -233,7 +233,7 @@ const GpsCamera = () => {
       <div
         style={{
           position: "absolute",
-          bottom: "40px",
+          bottom: "60px",
           left: "40%",
           transform: "translateX(-50%)",
           display: "flex",
