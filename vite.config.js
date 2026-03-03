@@ -9,7 +9,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       manifest: {
         name: "Pro F-Gps Cam",
-        short_name: "Pro F-Gps Cam",
+        short_name: "F-Gps Camera",
         description: "Pro F=Gps Cam For Gps Location",
         theme_color: "#000000",
         background_color: "#ffffff",
@@ -17,12 +17,12 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
-            src: "/icon.png",
+            src: "/camera.png",
             sizes: "192x192",
             type: "image/png"
           },
           {
-            src: "/icon.png",
+            src: "/camera.png",
             sizes: "512x512",
             type: "image/png"
           }
