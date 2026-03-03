@@ -260,7 +260,7 @@ const GpsCamera = () => {
         </button>
 
         {/* Capture Button */}
-        <button
+        <div
           onClick={capture}
           style={{
             width: "90px",
@@ -271,21 +271,17 @@ const GpsCamera = () => {
             justifyContent: "center",
             alignItems: "center",
             cursor: "pointer",
-            outline:"none"
           }}
         >
-          <div 
+          <div
             style={{
               width: "60px",
               height: "60px",
               borderRadius: "50%",
               background: "#1e88e5",
-              outline:"none",
-              cursor: "pointer"
-              
             }}
-          /> 
-        </button>
+          />
+        </div>
       </div>
 
       {/* GALLERY SCREEN */}
