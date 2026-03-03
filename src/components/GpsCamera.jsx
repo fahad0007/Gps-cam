@@ -273,14 +273,16 @@ const GpsCamera = () => {
             cursor: "pointer",
           }}
         >
-          <div
+          <button
             style={{
               width: "60px",
               height: "60px",
               borderRadius: "50%",
               background: "#1e88e5",
+              border: "none",
+              cursor: "pointer"
             }}
-          />
+          /> 
         </div>
       </div>
 
