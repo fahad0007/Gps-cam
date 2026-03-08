@@ -13,9 +13,6 @@ const GpsCamera = () => {
   const [showGallery, setShowGallery] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const [flashOn, setFlashOn] = useState(false);
-  const [flashActive, setFlashActive] = useState(false);
-
   // =============================
   // LOAD & SAVE GALLERY
   // =============================
@@ -86,11 +83,6 @@ const GpsCamera = () => {
   // =============================
   const capture = () => {
     if (!webcamRef.current) return;
-
-    if (flashOn) {
-      setFlashActive(true);
-      setTimeout(() => setFlashActive(false), 150);
-    }
 
     const video = webcamRef.current.video;
     const canvas = document.createElement("canvas");
@@ -175,19 +167,6 @@ const GpsCamera = () => {
         }}
       />
 
-      {/* FLASH EFFECT */}
-      {flashActive && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "white",
-            opacity: 0.9,
-            zIndex: 5,
-          }}
-        />
-      )}
-
       {/* HEADER */}
       <div
         style={{
@@ -224,24 +203,6 @@ const GpsCamera = () => {
         >
           {error ? "GPS ERROR" : "GPS LIVE"}
         </span>
-      </div>
-
-      {/* FLASH BUTTON */}
-      <div
-        onClick={() => setFlashOn(!flashOn)}
-        style={{
-          position: "absolute",
-          top: "90px",
-          right: "20px",
-          background: flashOn ? "#ffcc00" : "rgba(0,0,0,0.6)",
-          color: "white",
-          padding: "10px 14px",
-          borderRadius: "20px",
-          cursor: "pointer",
-          fontSize: "14px",
-        }}
-      >
-        ⚡
       </div>
 
       {/* ACCURACY METER */}
