@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 
 const GpsCamera = () => {
   const webcamRef = useRef(null);
+  const streamRef = useRef(null);
 
   const [coords, setCoords] = useState(null);
   const [accuracy, setAccuracy] = useState(null);
@@ -12,6 +13,8 @@ const GpsCamera = () => {
   const [gallery, setGallery] = useState([]);
   const [showGallery, setShowGallery] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const [torchOn, setTorchOn] = useState(false);
 
   // =============================
   // LOAD & SAVE GALLERY
@@ -24,6 +27,41 @@ const GpsCamera = () => {
   useEffect(() => {
     localStorage.setItem("fahad-gps-gallery", JSON.stringify(gallery));
   }, [gallery]);
+
+  // =============================
+  // GET CAMERA STREAM
+  // =============================
+  useEffect(() => {
+    const video = webcamRef.current?.video;
+
+    if (video && video.srcObject) {
+      streamRef.current = video.srcObject;
+    }
+  }, []);
+
+  // =============================
+  // FLASH CONTROL
+  // =============================
+  const toggleFlash = async () => {
+    try {
+      const stream = webcamRef.current.video.srcObject;
+      const track = stream.getVideoTracks()[0];
+
+      const capabilities = track.getCapabilities();
+
+      if (capabilities.torch) {
+        await track.applyConstraints({
+          advanced: [{ torch: !torchOn }],
+        });
+
+        setTorchOn(!torchOn);
+      } else {
+        alert("Flash not supported on this device");
+      }
+    } catch (err) {
+      console.log("Torch error:", err);
+    }
+  };
 
   // =============================
   // GET LOCATION
@@ -68,7 +106,7 @@ const GpsCamera = () => {
         await navigator.share({
           files: [file],
           title: "F-GPS Camera Image",
-          text: "Captured using Pro F-GPS Camera v1.0.19",
+          text: "Captured using Pro F-GPS Camera v2.2.02",
         });
       } else {
         alert("Sharing not supported on this device");
@@ -108,7 +146,7 @@ const GpsCamera = () => {
       `Accuracy: ±${accuracy?.toFixed(2)} meters`,
       `Secure Time: ${now.toLocaleString()}`,
       `Date: ${now}`,
-      `Version 2.1.01`,
+      `Version v2.2.02`,
       `Pro F-Gps by Fahad`,
     ];
 
@@ -187,7 +225,7 @@ const GpsCamera = () => {
             Pro F-Gps Camera
           </div>
           <div style={{ fontSize: "11px", opacity: 0.8 }}>
-            Version 2.1.01 • Designed & Developed by Fahad
+            Version 2.2.02 • Designed & Developed by Fahad
           </div>
         </div>
 
@@ -204,6 +242,25 @@ const GpsCamera = () => {
           {error ? "GPS ERROR" : "GPS LIVE"}
         </span>
       </div>
+
+      {/* FLASH BUTTON */}
+      <button
+        onClick={toggleFlash}
+        style={{
+          position: "absolute",
+          top: "90px",
+          right: "20px",
+          background: torchOn ? "#ffd700" : "rgba(0,0,0,0.6)",
+          color: "white",
+          border: "none",
+          borderRadius: "10px",
+          padding: "10px",
+          fontSize: "18px",
+          cursor: "pointer",
+        }}
+      >
+        🔦
+      </button>
 
       {/* ACCURACY METER */}
       {accuracy && (
@@ -242,11 +299,10 @@ const GpsCamera = () => {
           gap: "20px",
         }}
       >
-        {/* Gallery Button */}
         <button
           onClick={() => setShowGallery(true)}
           style={{
-            fontSize:"40px",
+            fontSize: "40px",
             width: "65px",
             height: "65px",
             borderRadius: "12px",
@@ -259,7 +315,6 @@ const GpsCamera = () => {
           📁
         </button>
 
-        {/* Capture Button */}
         <div
           onClick={capture}
           style={{
@@ -283,7 +338,6 @@ const GpsCamera = () => {
           />
         </div>
       </div>
-
       {/* GALLERY SCREEN */}
       {showGallery && (
         <div
