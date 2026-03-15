@@ -315,28 +315,41 @@ const GpsCamera = () => {
           📁
         </button>
 
-        <div
-          onClick={capture}
-          style={{
-            width: "90px",
-            height: "90px",
-            borderRadius: "50%",
-            border: "4px solid white",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: "pointer",
-          }}
-        >
-          <div
-            style={{
-              width: "60px",
-              height: "60px",
-              borderRadius: "50%",
-              background: "#1e88e5",
-            }}
-          />
-        </div>
+       <div
+  onClick={capture}
+  style={{
+    width: "90px",
+    height: "90px",
+    borderRadius: "50%",
+    border: "4px solid white",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    cursor: "pointer",
+    boxShadow: "0 8px 18px rgba(0,0,0,0.4)",
+    transition: "all 0.15s ease",
+    userSelect: "none",
+    WebkitTapHighlightColor: "transparent",
+  }}
+  onMouseDown={(e) => {
+    e.currentTarget.style.transform = "translateY(4px) scale(0.95)";
+    e.currentTarget.style.boxShadow = "0 3px 8px rgba(0,0,0,0.4)";
+  }}
+  onMouseUp={(e) => {
+    e.currentTarget.style.transform = "translateY(0) scale(1)";
+    e.currentTarget.style.boxShadow = "0 8px 18px rgba(0,0,0,0.4)";
+  }}
+>
+  <div
+    style={{
+      width: "60px",
+      height: "60px",
+      borderRadius: "50%",
+      background: "linear-gradient(145deg,#42a5f5,#1565c0)",
+      boxShadow: "inset 0 4px 8px rgba(255,255,255,0.6)",
+    }}
+  />
+</div>
       </div>
       {/* GALLERY SCREEN */}
       {showGallery && (
